@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,4 +22,4 @@ Route::put('/orders/{id}', [OrderController::class, 'update'])->name('orders.upd
 
 Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
-
+Route::resource('/products', ProductController::class);
