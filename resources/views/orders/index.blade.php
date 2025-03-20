@@ -36,8 +36,7 @@
                     </tr>
                   </thead>
                   <tbody>
-
-                    @if (empty($orders))
+                    @if (count($orders))
     
                       @foreach ($orders as $order)
                         <tr>
