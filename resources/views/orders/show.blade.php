@@ -5,27 +5,46 @@
 @endsection
 
 @section('content')
-<div class="position-relative top-50 start-50 translate-middle"  style="margin-left: 250px; ">
-    <div class="card px-5 py-2" style="width: 20rem;">
-        <div class="card-body">
-            <h5 class="card-title d-flex">Order Details</h5>
-                <p class="card-text"><strong>Order ID:</strong> {{ $order->id }}</p>
-                <p class="card-text"><strong>Total Price:</strong> JOD {{ $order->total_price }}</p>
-                <p class="card-text"><strong>User ID:</strong> {{ $order->user_id }}</p>
-                <p class="card-text"><strong>Shipping Address:</strong> {{ $order->shipping_address }}</p>
-                <p class="card-text"><strong>Phone:</strong> {{ $order->phone }}</p>
-                <p class="card-text"><strong>Coupon:</strong>
-    
-                    @if ($order->coupon)
-                        {{$order->coupon}}
-                    @else
-                        {{'None'}}
-                    @endif
-    
-                </p>
-                <p class="card-text"><strong>Status:</strong> {{ $order->status }}</p>
-          <a href="{{route('orders.index')}}" class="btn btn-primary">Go back</a>
-        </div>
-      </div>
+<div class="container m-5">
+    <div class="my-3">
+        <h3>Order 200025-{{$order['id']}} Items</h3>
+    </div>
+
+    <div class="my-2">
+        <a href="{{route('orders.index')}}" class="btn btn-primary">Go back</a>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr class="table-dark">
+            <th scope="col">#</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Product Image</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Price</th>
+        </tr>
+        </thead>
+        <tbody>
+            @if (count($order->items))
+                @foreach ($order->items as $item)
+                    <tr class="align-middle">
+                        <td>{{ $loop->iteration }}</td>
+                        <td><img src="{{ asset('storage/' . $item->product->image_path) }}" alt="{{ $item->product->name }}" class="img-fluid" width="80px"></td>
+                        <td>{{ $item->product->name }}</td>
+                        <td>${{ $item->product->price }}</td>
+                        <td>{{ $item->quantity }}</td>
+                        <td>${{ $item->product->price * $item->quantity }}</td>
+                    </tr>
+                @endforeach
+                
+            @else
+            <tr class="align-middle">
+                <td colspan="6">This order is empty.</td>
+            </tr>
+            @endif
+        </tbody>
+        </table>
+        
 </div>
 @endsection

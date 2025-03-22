@@ -19,4 +19,13 @@ class Order extends Model
         'coupon',
         'status',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function items() {
+        return $this->hasMany(OrderItems::class, 'order_id', 'id');
+    }
 }
