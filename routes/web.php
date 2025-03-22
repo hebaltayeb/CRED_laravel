@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\CategoryController;
+use App\Models\Product;
 Route::get('/', function () {
     return view('welcome');
 })-> name('welcome');
@@ -23,3 +24,10 @@ Route::put('/orders/{id}', [OrderController::class, 'update'])->name('orders.upd
 Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
 Route::resource('/products', ProductController::class);
+
+Route::resource('categories', CategoryController::class);
+
+Route::get('/', function () {
+    $latestProducts = Product::latest()->take(3)->get();
+    return view('landing', compact('latestProducts'));
+});
