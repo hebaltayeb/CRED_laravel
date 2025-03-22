@@ -17,10 +17,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->text('address')->nullable();
-            $table->string('mobile_number', 15);
-            $table->enum('gender', ['male', 'female']);
-            $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -39,15 +35,6 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
-
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id(); // id
-            $table->string('name'); // name
-            $table->text('description')->nullable(); // description (nullable for optional content)
-            $table->string('image')->nullable(); // image (nullable for optional uploads)
-            $table->integer('quantity'); // quantity
-            $table->timestamps(); // created_at and updated_at timestamps
-        });
     }
 
     /**
@@ -58,6 +45,5 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
-        Schema::dropIfExists('categories');
     }
 };
