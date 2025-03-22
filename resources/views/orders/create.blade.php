@@ -16,7 +16,16 @@
                     </div>
                     <div class="mb-3">
                         <label for="user_id" class="form-label">User ID</label>
-                        <input type="number" class="form-control input" id="user_id" name="user_id" required placeholder="User ID">
+                        <select class="form-control input" id="user_id" name="user_id" required>
+                            @if(isset($users) && $users->count())
+                                <option value="" disabled selected>Select a user</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            @else
+                                <option value="" disabled selected>No users available</option>
+                            @endif
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="shipping_address" class="form-label">Shipping Address</label>

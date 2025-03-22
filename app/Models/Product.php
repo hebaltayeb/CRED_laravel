@@ -17,4 +17,9 @@ class Product extends Model
         'image_path',
         'is_active'
     ];
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItems::class, 'product_id', 'id');
+    }
 }

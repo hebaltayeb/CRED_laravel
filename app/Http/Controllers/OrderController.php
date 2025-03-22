@@ -4,24 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\User;
 
 class OrderController extends Controller
 {
     public function index() {
 
         $orders = Order::all(); // Fetch all orders
-        return view('orders.index', compact('orders')); 
+        $users = User::all();
+        return view('orders.index', compact('orders', 'users')); 
 
     }
 
     public function create() {
-
+        
         return view('orders.create');
 
     }
 
     public function show($id) {
-        $order = Order::findOrFail($id);
+        $order = Order::with('items.product')->findOrFail($id);
         return view('orders.show', compact('order'));
     }
 
@@ -29,7 +31,7 @@ class OrderController extends Controller
 
         $validatedData = $request->validate([
             'total_price' => 'required|numeric',
-            'user_id' => 'required|string',
+            'user_id' => 'required|exists:users,id',
             'shipping_address' => 'required|string',
             'phone' => 'required|string',
             'coupon' => 'nullable|string',
