@@ -30,20 +30,34 @@
                     <tr class="table-dark">
                       <th scope="col">#</th>
                       <th scope="col">Order#</th>
+                      <th scope="col">User Email</th>
                       <th scope="col">Total Price</th>
+                      <th scope="col">Shipping Address</th>
+                      <th scope="col">Phone</th>
+                      <th scope="col">Coupon</th>
                       <th scope="col">Status</th>
                       <th scope="col">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-
-                    @if (empty($orders))
+                    @if (count($orders))
     
                       @foreach ($orders as $order)
+                      @foreach ($users as $user)
                         <tr>
                           <th scope="row">{{$order['id']}}</th>
                           <td>200025-{{$order['id']}}</td>
-                          <td>JOD {{$order['total_price']}}</td>
+                          <td>{{ $user->email }}</td>
+                          <td>${{$order['total_price']}}</td>
+                          <td>${{$order['shipping_address']}}</td>
+                          <td>${{$order['phone']}}</td>
+                          <td>
+                          @if ($order->coupon)
+                              {{$order->coupon}}
+                          @else
+                              {{'None'}}
+                          @endif
+                          </td>
                           <td>{{$order['status']}}</td>
                           <td>
                             <div class="dropdown">
@@ -51,22 +65,22 @@
                                 <i class="bi bi-three-dots-vertical"></i>
                               </button>
                               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="{{ route('orders.show', $order['id']) }}">View</a></li>
+                                <li><a class="dropdown-item" href="{{ route('orders.show', $order['id']) }}">View Items</a></li>
                                 <li><a class="dropdown-item edit-order-link" href="#" data-id="{{ $order->id }}">
                                   Edit
                                 </a>
                                 </li>
                                 <li>
-                                  <form action="{{ route('orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this order?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                  <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteOrderModal" onclick="setDeleteAction({{ $order->id }})">
+                                    Delete
+                                  </button>                                
                                 </form>
                                 </li>
                               </ul>
                             </div>
                           </td>
                         </tr>
+                        @endforeach
                         @endforeach
 
                     @else
@@ -77,6 +91,29 @@
                     </tbody>
                   </table>
                 </div>
+                <!-- Delete Confirmation Modal -->
+                <div class="modal fade" id="deleteOrderModal" tabindex="-1" aria-labelledby="deleteOrderModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="deleteOrderModalLabel">Confirm Deletion</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              Are you sure you want to delete this order?
+                          </div>
+                          <div class="modal-footer">
+                              <form id="deleteOrderForm" action="{{ route('orders.destroy', $order->id) }}" method="POST">
+                                  @csrf
+                                  @method('DELETE')
+                                  <button type="submit" class="btn btn-danger">Delete</button>
+                              </form>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
                 @endsection
 <script src="/js/editOrders.js"></script>
 <div id="ajaxEditModalContainer"></div>               
