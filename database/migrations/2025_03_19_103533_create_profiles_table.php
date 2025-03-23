@@ -8,8 +8,6 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -21,28 +19,17 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('mobile_number')->nullable();
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
-            $table->string('photo')->nullable();
-            $table->timestamps();
-        });
-
-        
-        Schema::create('coupons', function (Blueprint $table) {
-            $table->id();
-            $table->string('code')->unique(); 
-            $table->decimal('discount', 8, 2); 
-            $table->timestamp('expires_at')->nullable(); 
+            $table->string('photo')->nullable();  
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
+   
     public function down()
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('coupons');
-    }
+    }   
 };
